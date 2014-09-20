@@ -20,9 +20,6 @@
   <template>
     <style>    
       :host {
-        position: absolute;
-        width: 100%;
-        height: 100%;
         box-sizing: border-box;
         font-family: "RobotoDraft",Helvetica,Arial,sans-serif;
         font-size: 14px;
@@ -120,7 +117,7 @@
         <section id="section4">
           <core-field id="core_field" icon="search" theme="core-light-theme" center horizontal layout cross-fade>
             <core-icon icon="search" id="core_icon"></core-icon>
-            <core-input willvalidate placeholder="Trigram" inputvalue="gpl" value="{{ trigram }}" id="core_input" flex></core-input>
+            <core-input willvalidate placeholder="Trigram" value="{{ trigram }}" id="core_input" flex></core-input>
           </core-field>
         </section>
       </core-animated-pages>
@@ -149,12 +146,6 @@
 
     Polymer('octo-askbobs', {
       response: null,
-      nickname: ' ',
-      first_name: ' ',
-      last_name: ' ',
-      mobile_number: ' ',
-      email: ' ',
-      tiny_photo: null,
       lvl: 1,
       job: "Consultant",
       lob: "BA",
@@ -164,7 +155,7 @@
       responseChanged: function () {
         if( this.response === null ) return;
         this.nickname      = this.response.nickname
-        this.photo    		 = this.response.photo
+        this.photo         = this.response.photo
         this.first_name    = this.response.first_name
         this.last_name     = this.response.last_name
         this.mobile_number = this.response.mobile_number

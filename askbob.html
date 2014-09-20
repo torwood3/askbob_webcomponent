@@ -1,98 +1,127 @@
 <link rel="import" href="bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="bower_components/core-animated-pages/transitions/hero-transition.html">
+<link rel="import" href="bower_components/core-animated-pages/transitions/cross-fade.html">
+<link rel="import" href="bower_components/core-animated-pages/transitions/slide-down.html">
+<link rel="import" href="bower_components/core-animated-pages/transitions/slide-up.html">
+<link rel="import" href="bower_components/core-animated-pages/transitions/tile-cascade.html">
+<link rel="import" href="bower_components/core-icons/core-icons.html">
+<link rel="import" href="bower_components/core-icon/core-icon.html">
+<link rel="import" href="bower_components/core-field/core-field.html">
+<link rel="import" href="bower_components/core-input/core-input.html">
+<link rel="import" href="bower_components/core-icons/av-icons.html">
+<link rel="import" href="bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
 
 <polymer-element name="octo-askbob" attributes="trigram">
+
   <template>
-    <style> 
-    	section {
-        -webkit-transition-delay: 0s;
-        -webkit-transition-duration: 0.5s;
-        -webkit-transition-property: all;
-        -webkit-transition-timing-function: ease;
-        background-color: rgb(18, 57, 97);
-        border-collapse: collapse;
-        color: rgb(51, 51, 51);
-        display: block;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-size: 16px;
-        height: 200px;
-        line-height: 20px;
-        margin-bottom: 5px;
-        transition-delay: 0s;
-        transition-property: all;
-        transition-timing-function: ease;
-        width: 250px;
-    	}
-      header {
-        height: 26px;
-        color: white;
-        font-size: 19px;
-        padding-left: 5px;
-        padding-top: 5px;
+    <style>    
+      :host {
+        box-sizing: border-box;
+        font-family: "RobotoDraft",Helvetica,Arial,sans-serif;
+        font-size: 14px;
       }
-      header a{
-        color: white;
-        text-decoration: none;
-      }
-
-      #content {
+      #core_animated_pages {
+        width: 220px;
+        height: 113px;
+        overflow: hidden;
+        left: 340px;
+        top: 30px;
+        position: absolute;
+        border-width: 1px 0 1px 0;
+        border-color: grey;
+        border-style: solid;
         background-color: rgb(255, 255, 255);
-        border-collapse: collapse;
-        color: rgb(51, 51, 51);
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-size: 16px;
-        height: 143px;
-        line-height: 17px;
-        margin-left: 10px;
-        margin-right: 10px; 
-        position: relative;
-        transition-delay: 0s;
-        transition-duration: 0.5s;
-        transition-property: all;
-        transition-timing-function: ease;    
       }
-      li {
-        list-style-type: none;
-        margin-top: 10px;
+      #section {
+        height: 113px;
+        width: 220px;
+        padding: 3px;
+        position:relative;
+        
       }
-      li:before {
-          content: " "; /* on affiche une chaîne de caractère */
+      img {
+        padding-top: 18px; 
+        margin-right: 7px;
+        width: 70px;
+        float: left;
       }
-
+      ul#content {
+        list-style-type: none; 
+        padding: 0;
+        margin: 0;
+        margin-top: 16px;
+      }
+      ul#content > li {
+        padding-bottom: 5px;  
+      }
+      #more {
+        font-size: 0.8em;
+        text-align: center;
+      }
+      #core_icon1 {
+        color: grey; 
+      }
+      paper-button[raisedButton] {
+        transform: rotate(90deg);
+        float: right;
+        z-index: 10;
+        position: absolute;
+        top: 40px;
+        right: -60px;
+        width: 120px;
+        height: 30px;
+      }
+      paper-button[raisedButton]:hover {
+        right: -40px;
+      }
+    
     </style>
-<core-ajax
-    auto
-    url="http://localhost:8000/{{ trigram }}.json"
-    handleAs="json"
-    response="{{response}}"></core-ajax>
-    <section>
-      <header>
-        AskBob - <a href="http://askbob.octo.com/users/{{trigram}}">{{nickname}}</a><br>
-      </header>
-      <ul id="content">
-        <br>
-        <li id="name">{{first_name}} {{last_name}}</li>
-        <li id="phone">{{mobile_number}}</li>
-        <li id="email">{{email}}</li>
-      </ul>
-    </section>
-   </template>
-  <script>
-    Polymer("octo-askbob",{
-      nickname:" ",
-      first_name:" ",
-      last_name:" ",
-      mobile_number:" ",
-      email:" ",
-      created: function(){
+    <core-ajax url="http://localhost:8000/{{ trigram }}.json" handleas="json" auto response="{{ response }}" id="core_ajax" hidden></core-ajax>
+    <core-animated-pages selected="{{ selectedHeader }}" selectedindex="0" notap id="core_animated_pages"  >
+      <section id="section" active >
+        <img src="{{photo}}" />
+        <ul id="content">
+          <li id="name"> {{ first_name }} {{ last_name }}  </li>
+          <li id="phone">{{ mobile_number }}</li>
+        </ul>
+        <a id="email" href="mailto:{{ email }}" ><core-icon icon="mail" id="core_icon1"></core-icon></a>
+        <br/>
+        <a id="more" href="http://localhost:3000/users/{{ nickname }} ">Afficher les details</a>
+        <paper-button label="Ask Bob" raisedbutton id="paper_button" on-tap="{{ onTapSearch }}" class="hover" ></paper-button>
+      </section>
+      <section id="section1">
+        <core-field id="core_field" icon="search" theme="core-light-theme" center horizontal layout >
+          <core-icon icon="search" id="core_icon"></core-icon>
+          <core-input willvalidate placeholder="Trigram" value="{{ trigram }}" id="core_input" flex></core-input>
+        </core-field>
+      </section>
+    </core-animated-pages>
+  </template>
 
-      },
-      responseChanged: function() {
+  <script>
+
+    Polymer('octo-askbob',{
+      response: null,
+      selectedHeader: 0,
+
+      responseChanged: function () {
+        if( this.response === null ) return;
         this.nickname      = this.response.nickname
+        this.photo         = this.response.photo
         this.first_name    = this.response.first_name
         this.last_name     = this.response.last_name
         this.mobile_number = this.response.mobile_number
         this.email         = this.response.email
-      }
+        this.selectedHeader = 0
+
+      },
+      onTapSearch: function (){
+        this.selectedHeader = ( this.selectedHeader ? 0 : 1 );
+      },
     });
+
   </script>
+
 </polymer-element>
